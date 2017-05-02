@@ -2,31 +2,26 @@
 
 from collections import namedtuple
 
-
 # declare run structure
 Rbp = namedtuple("Rbp", "persist, q, d, score, err")
 
 
 def compute_rbp(query_ids, runs, qrels, persists, depth):
     t_rbp = []
-    for q_id in query_ids:
 
+    if depth == 0:
+        label_d = "full"
+    else:
+        label_d = str(depth)
+
+    for q_id in query_ids:
         # if depth == 0 then check all ranks, else check up to the specified depth
         if depth == 0:
             qruns = [q for q in runs if q.q_id == q_id]
-            label_d = "full"
         else:
             qruns = [q for q in runs if q.q_id == q_id and q.rank <= depth]
-            label_d = str(depth)
 
         d = len(qruns)
-
-        # get qrels for the current query (q_id)
-        qrels_part = [qr for qr in qrels if qr.q_id == q_id]
-        qrels_list = dict()
-        for qrel in qrels_part:
-            qrels_list[qrel.doc_id] = qrel.relevance
-
 
         # for each persistence value
         for p in persists:
@@ -35,10 +30,9 @@ def compute_rbp(query_ids, runs, qrels, persists, depth):
 
             # calculate rbp for each query using current persitence value
             for q in qruns:
-                #qrel_key = q.q_id + "*" + q.doc_id
-                #if q.doc_id in qrels_list:
+                qrel_key = q.q_id + "*" + q.doc_id
                 try:
-                    if qrels_list[q.doc_id] > 0:
+                    if qrels[qrel_key] > 0:
                         temp_rbp += (1 * pow(p, q.rank - 1))
                 except:
                     temp_err += pow(p, q.rank - 1)
