@@ -89,7 +89,7 @@ if not print_detail and not print_overall:
 
 startTime = time.time()
 
-# load runs and qresl into the respected list
+# load runs and qrels into the respected list
 runs, query_ids = run.load_runs(runs_path)
 qrels = qrel.load_qrels(qrels_path, relevance_threshold)
 persists = persist.load_persist(persists_string)
