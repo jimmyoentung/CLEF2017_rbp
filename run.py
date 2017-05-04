@@ -1,4 +1,7 @@
-# Created by Jimmy (April 2017)
+"""
+Created by Jimmy (April 2017)
+Load and validate run data
+"""
 
 import os
 from collections import namedtuple

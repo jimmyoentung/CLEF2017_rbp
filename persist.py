@@ -1,4 +1,7 @@
-# Created by Jimmy (April 2017)
+"""
+Created by Jimmy (April 2017)
+Load and validate persistence data
+"""
 
 
 def load_persist(persists_string):

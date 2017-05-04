@@ -1,9 +1,12 @@
-# Created by Jimmy (April 2017)
+"""
+Created by Jimmy (April 2017)
+Load and validate qrels data
+"""
 
 import os
 
 
-def load_qrels(qrels_path):
+def load_qrels(qrels_path, relevance_threshold):
     # create empty dictionary to hold the qrels data. key: q_id*doc_id. value: relevance score
     temp = dict()
     if not os.path.exists(qrels_path):
@@ -13,6 +16,10 @@ def load_qrels(qrels_path):
         for line in infile:
             parts = line.split()
             key = parts[0] + "*" + parts[2]
-            temp[key] = int(parts[3])
+            if int(parts[3]) >= relevance_threshold:
+                relevance_score = 1
+            else:
+                relevance_score = 0
+            temp[key] = relevance_score
 
     return temp
